@@ -1,4 +1,15 @@
-create database t01_library;
+DROP TABLE IF EXISTS public.booking CASCADE;
+DROP TABLE IF EXISTS public.issuance CASCADE;
+DROP TABLE IF EXISTS public.book_instance CASCADE;
+DROP TABLE IF EXISTS public.reader CASCADE;
+DROP TABLE IF EXISTS public.book CASCADE;
+DROP TABLE IF EXISTS public.publishing_house CASCADE;
+DROP TABLE IF EXISTS public.author CASCADE;
+
+DROP TYPE IF EXISTS book_state CASCADE;
+DROP TYPE IF EXISTS book_status CASCADE;
+
+--create database t01_library;
 
 create table public.author(
 id serial primary key,
@@ -34,19 +45,18 @@ inventory_number integer primary key,
 book_info integer not null references public.book(id),
 state book_state not null,
 status book_status not null,
-location varchar(100) not null);
+location varchar(100));
 
 create table  public.issuance(
 fk_reader_ticket integer not null references public.reader(id_reader_ticket),
-fk_inventory_num integer not null references public.book_instance(inventory_number),
-date_time_issue varchar(20) not null,
-expected_return_date varchar(12) not null,
-actual_return_date varchar(12));
+fk_inventory_number integer not null references public.book_instance(inventory_number),
+date_time_issue TIMESTAMP not null,
+expected_return_date DATE not null,
+actual_return_date DATE);
 
 create table public.booking(
 booking_num serial primary key,
 fk2_reader_ticket integer not null references public.reader(id_reader_ticket),
 book_info integer not null references  public.book(id),
 date_time varchar(20) not null);
-
 
